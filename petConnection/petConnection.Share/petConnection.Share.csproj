@@ -8,8 +8,10 @@
 
   <ItemGroup>
     <None Remove="Entitties\" />
+    <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entitties\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>

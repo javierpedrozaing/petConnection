@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1706.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "petConnection.FrontEnd", "petConnection.FrontEnd.csproj", "{9B6108D3-CFD3-4DEC-8D8A-EEBDB7336F2E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B6108D3-CFD3-4DEC-8D8A-EEBDB7336F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B6108D3-CFD3-4DEC-8D8A-EEBDB7336F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B6108D3-CFD3-4DEC-8D8A-EEBDB7336F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B6108D3-CFD3-4DEC-8D8A-EEBDB7336F2E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3864B923-DA34-4A21-BD0E-8E94BA02B4B6}
+	EndGlobalSection
+EndGlobal
