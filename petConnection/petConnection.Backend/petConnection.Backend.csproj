@@ -21,9 +21,23 @@
 
   <ItemGroup>
     <None Remove="Data\" />
+    <None Remove="Controllers\" />
+    <None Remove="Repositories\" />
+    <None Remove="Repositories\Interfaces\" />
+    <None Remove="UnitOfWork\" />
+    <None Remove="UnitOfWork\Interfaces\" />
+    <None Remove="UnitOfWork\Implementations\" />
+    <None Remove="Repositories\Implementations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="UnitOfWork\" />
+    <Folder Include="UnitOfWork\Interfaces\" />
+    <Folder Include="UnitOfWork\Implementations\" />
+    <Folder Include="Repositories\Implementations\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">

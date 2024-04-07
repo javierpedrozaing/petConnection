@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using petConnection.Backend.Data;
-
+using petConnection.Backend.UnitOfWork.Implementations;
+using petConnection.Backend.UnitOfWork.Interfaces;
+using petConnection.Backend.Repositories.Interfaces;
+using petConnection.Backend.Repositories.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +15,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConnection"));
 
+builder.Services.AddScoped(typeof(IGenericRespository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
 var app = builder.Build();
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
