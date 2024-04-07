@@ -1,4 +1,6 @@
 ﻿using System;
+using petConnection.FrontEnd.Shared.Responses;
+
 namespace petConnection.Backend.UnitOfWork.Interfaces
 {
     public interface IGenericUnitOfWork<T> where T : class
