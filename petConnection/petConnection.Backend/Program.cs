@@ -17,6 +17,8 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConne
 
 builder.Services.AddScoped(typeof(IGenericRespository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 
 var app = builder.Build();
 
