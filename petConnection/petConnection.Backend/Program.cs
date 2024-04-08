@@ -22,7 +22,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConnection"));
 
 builder.Services.AddTransient<SeedDb>();
-builder.Services.AddTransient<SeedDbPets>();
 
 
 builder.Services.AddScoped(typeof(IGenericRespository<>), typeof(GenericRepository<>));

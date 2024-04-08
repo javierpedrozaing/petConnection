@@ -42,7 +42,7 @@ namespace petConnection.Share.Entitties
         [Display(Name = "Foto")]
         public string Photo { get; set; } = null!;
 
-        public User User { get; set; }
+        public User? User { get; set; } = null!;
     }
 }
 
