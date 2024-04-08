@@ -30,10 +30,10 @@ namespace petConnection.Backend.Data
                 {
                     var user = new User
                     {
-                        UserName = $"user{i+1}",
-                        Email = $"user{i+1}@example.com",
+                        UserName = $"userexample{i+1}",
+                        Email = $"userexample{i+1}@example.com",
                         Password = "password",
-                        Role = "User",                        
+                        Role = "User",
                         Profile = new Profile
                         {
                             Name = $"User{i+1}",
@@ -50,7 +50,7 @@ namespace petConnection.Backend.Data
                 }
 
                 // Add to context and save changes
-                _context.AddRange(users);             
+                _context.AddRange(users);
             }
             await _context.SaveChangesAsync();
         }
