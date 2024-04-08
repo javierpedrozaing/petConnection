@@ -97,28 +97,24 @@ namespace petConnection.Backend.Data
         {
             _context.Database.EnsureCreated();
 
-            if (_context.Users.Any())
+            if (!_context.Users.Any())
             {
-                // DB has been seeded already
-                return;
-            }
-
-            // Seed Users
-            var users = new List<User>
+                // Seed Users
+                var users = new List<User>
             {
                 new User
                 {
                     UserName = "user1",
                     Email = "user1@example.com",
                     Password = "password",
-                    Role = "User",
+                    Role = "Admin",
                     Profile = new Profile
                     {
                         Name = "John",
                         LastName = "Doe",
                         Age = 30,
                         Address = "123 Main St",
-                        Role = "User",
+                        Role = "Admin",
                         Phone = "123-456-7890",
                         Photo = "path/to/photo.jpg"
                     },
@@ -126,33 +122,33 @@ namespace petConnection.Backend.Data
                 }
             };
 
-            // Seed Pets
-            var random = new Random();
-            foreach (var user in users)
-            {
-                for (int i = 1; i <= 12; i++)
+                // Seed Pets
+                var random = new Random();
+                foreach (var user in users)
                 {
-                    var pet = new Pet
+                    for (int i = 1; i <= 12; i++)
                     {
-                        Name = GenerateRandomNames(i).First(),
-                        Specie = GetRandomSpecie(),
-                        Race = GetRandomRace(),
-                        Age = random.Next(1, 15),
-                        Gender = GetRandomGender(),
-                        Size = GetRandomSize(),
-                        Weight = $"{random.Next(5, 50)} lbs",
-                        Color = GetRandomColor(),
-                        HealthCondition = GetRandomHealthCondition(),
-                        Behavior = GetRandomBehavior(),
-                        Photo = "path/to/photo.jpg"
-                    };
-                    user.Pets.Add(pet);
+                        var pet = new Pet
+                        {
+                            Name = GenerateRandomNames(i).First(),
+                            Specie = GetRandomSpecie(),
+                            Race = GetRandomRace(),
+                            Age = random.Next(1, 15),
+                            Gender = GetRandomGender(),
+                            Size = GetRandomSize(),
+                            Weight = $"{random.Next(5, 50)} lbs",
+                            Color = GetRandomColor(),
+                            HealthCondition = GetRandomHealthCondition(),
+                            Behavior = GetRandomBehavior(),
+                            Photo = "path/to/photo.jpg"
+                        };
+                        user.Pets.Add(pet);
+                    }
                 }
-            }
-
-            // Add to context and save changes
-            _context.AddRange(users);
-            _context.SaveChanges();
+                // Add to context and save changes
+                _context.AddRange(users);
+                _context.SaveChanges();
+            }         
         }
 
         private string[] GenerateRandomNames(int count)
