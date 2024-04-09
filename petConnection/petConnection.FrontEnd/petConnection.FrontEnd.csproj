@@ -28,4 +28,9 @@
     <Folder Include="Pages\Countries\" />
     <Folder Include="Shared\Responses\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

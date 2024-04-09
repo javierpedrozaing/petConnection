@@ -21,7 +21,7 @@ namespace petConnection.Backend.Data
 
         private async Task CheckUsersAsync()
         {
-            if (_context.Users.Count() >= 1)
+            if (_context.Users.Count() <= 1)
             {
                 // Seed Users
                 var users = new List<User>();
