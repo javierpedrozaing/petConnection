@@ -1,0 +1,53 @@
+﻿@page "/pets";
+
+<h3>Paises</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/pets/create">Crear nueva mascota</a>
+</div>
+
+<GenericList MyList="Pets">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Especie</th>
+                    <th>Raza</th>
+                    <th>Edad</th>
+                    <th>Género</th>
+                    <th>Color</th>
+                    <th>Tamaño</th>
+                    <th>Peso</th>
+                    <th>Estado de salud</th>
+                    <th>Comportamiento</th>
+                    <th>Foto</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pet in Pets!)
+                {
+                    <tr>
+                        <td>@pet.Name</td>
+                        <td>@pet.Specie</td>
+                        <td>@pet.Race</td>
+                        <td>@pet.Age</td>
+                        <td>@pet.Gender</td>
+                        <td>@pet.Color</td>
+                        <td>@pet.Size</td>
+                        <td>@pet.Weight</td>
+                        <td>@pet.HealthCondition</td>
+                        <td>@pet.Behavior</td>
+                        <img href="@pet.Photo" />
+                        <td>
+                            <a href="/pets/edit/@pet.Id" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="/pets/details/@pet.Id" class="btn btn-info btn-sm">Detalless</a>
+                            <button @onclick="@(() => DeleteAsync(pet))" class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

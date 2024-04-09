@@ -22,11 +22,13 @@
     <None Remove="Repositories\" />
     <None Remove="Pages\Countries\" />
     <None Remove="Shared\Responses\" />
+    <None Remove="Pages\Pets\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Pages\Countries\" />
     <Folder Include="Shared\Responses\" />
+    <Folder Include="Pages\Pets\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">

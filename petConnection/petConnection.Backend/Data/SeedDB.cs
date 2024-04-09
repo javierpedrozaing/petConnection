@@ -116,7 +116,7 @@ namespace petConnection.Backend.Data
                         Address = "123 Main St",
                         Role = "Admin",
                         Phone = "123-456-7890",
-                        Photo = "path/to/photo.jpg"
+                        Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
                     },
                     Pets = new List<Pet>()
                 }
@@ -140,7 +140,7 @@ namespace petConnection.Backend.Data
                             Color = GetRandomColor(),
                             HealthCondition = GetRandomHealthCondition(),
                             Behavior = GetRandomBehavior(),
-                            Photo = "path/to/photo.jpg"
+                            Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
                         };
                         user.Pets.Add(pet);
                     }
