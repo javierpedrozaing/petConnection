@@ -140,7 +140,7 @@ namespace petConnection.Backend.Data
                             Color = GetRandomColor(),
                             HealthCondition = GetRandomHealthCondition(),
                             Behavior = GetRandomBehavior(),
-                            Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
+                            //Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
                         };
                         user.Pets.Add(pet);
                     }

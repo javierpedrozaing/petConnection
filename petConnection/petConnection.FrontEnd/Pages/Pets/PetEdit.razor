@@ -1,6 +1,5 @@
-﻿<h3>Component1</h3>
+﻿@page "/pets/edit/{Id:int}"
 
-@code {
+<h3>Editar mascota</h3>
 
-}
-
+<PetForm @ref="petForm" Model="pet" Pet="pet" OnValidSubmit="EditPetAsync" ReturnAction="Return"></PetForm>

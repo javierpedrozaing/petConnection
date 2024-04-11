@@ -1,6 +1,6 @@
-﻿<h3>Component1</h3>
+﻿@page "/pets/create";
 
-@code {
 
-}
+<h3>Crear mascota</h3>
 
+<PetForm @ref="petForm" Pet="pet" OnValidSubmit="CreateAsync" ReturnAction="Return"></PetForm>

@@ -39,8 +39,9 @@ namespace petConnection.Share.Entitties
         [Required]
         public string Behavior { get; set; }
 
-        [Required]
-        public string Photo { get; set; }
+        // temporal commented
+        //[Required]
+        //public string Photo { get; set; }
 
         public User? User { get; set; }
     }

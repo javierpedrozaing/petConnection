@@ -1,6 +1,13 @@
-﻿<h3>Component1</h3>
+﻿@page "/pets/details/{Id:int}"
 
-@code {
-
+@if (pet is null)
+{
+    <Loading />
 }
-
+else
+{
+    <PetProfile TModel="Pet" Model="@pet" />
+    <div class="mb-2">
+        <a class="btn btn-success" href="/pets">Regresar</a>
+    </div>
+}

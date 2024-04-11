@@ -1,0 +1,56 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"/>
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="petName">Name</label>
+        <InputText class="form-control" @bind-Value="@Pet.Name" id="petName" placeholder="Nombre de la mascota" />
+    </div>
+    <div class="form-group">
+        <label for="petGender">Gender</label>
+        <InputSelect class="form-control" @bind-Value="@Pet.Gender" id="petGender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="petAge">Age</label>
+        <InputNumber class="form-control" @bind-Value="@Pet.Age" id="petAge" placeholder="Edad" />
+    </div>
+    <div class="form-group">
+        <label for="petSize">Size</label>
+        <InputText class="form-control" @bind-Value="@Pet.Size" id="petSize" placeholder="Tamaño" />
+    </div>
+    <div class="form-group">
+        <label for="petSize">Race</label>
+        <InputText class="form-control" @bind-Value="@Pet.Race" id="petRace" placeholder="Raza" />
+    </div>
+    <div class="form-group">
+        <label for="petSize">Specie</label>
+        <InputText class="form-control" @bind-Value="@Pet.Specie" id="petSpecie" placeholder="Especie" />
+    </div>
+    <div class="form-group">
+        <label for="petWeight">Weight (kg)</label>
+        <InputText class="form-control" @bind-Value="@Pet.Weight" id="petWeight" placeholder="Peso" />
+    </div>
+    <div class="form-group">
+        <label for="petColor">Color</label>
+        <InputText class="form-control" @bind-Value="@Pet.Color" id="petColor" placeholder="Color" />
+    </div>
+    <div class="form-group">
+        <label for="petHealthCondition">Health Condition</label>
+        <InputText class="form-control" @bind-Value="@Pet.HealthCondition" id="petHealthCondition" placeholder="Enter pet's health condition" />
+    </div>
+    <div class="form-group">
+        <label for="petBehavior">Behavior</label>
+        <InputText class="form-control" @bind-Value="@Pet.Behavior" id="petBehavior" placeholder="Enter pet's behavior" />
+    </div>
+    
+    <InputNumber class="form-control" @bind-Value="@Pet.UserId" id="petHiddenNumber"  style="display: none;" />
+
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>
