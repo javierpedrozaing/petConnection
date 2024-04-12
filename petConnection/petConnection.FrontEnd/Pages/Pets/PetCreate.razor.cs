@@ -20,6 +20,7 @@ namespace petConnection.FrontEnd.Pages.Pets
 
         protected override void OnInitialized()
         {
+            pet = new Pet();
             pet.UserId = 1;
         }
 

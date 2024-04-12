@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
 using petConnection.Share.Entitties;
+using petConnection.Share.Interfaces;
 
 namespace petConnection.FrontEnd.Pages.Pets
 {
 	public partial class PetForm
-	{
-		private EditContext editContext = null!;
+    {
+		private EditContext editContext = null!;        
 
-		[EditorRequired, Parameter]public Pet Pet { get; set; } = null!;
+        [EditorRequired, Parameter]public Pet Pet { get; set; } = null!;
 
         [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
 
@@ -21,9 +22,14 @@ namespace petConnection.FrontEnd.Pages.Pets
 
 		public bool FormPostedSuccessfully { get; set; }
 
+        protected override void OnParametersSet()
+        {            
+            editContext = new EditContext(Pet);
+        }
+
         protected override void OnInitialized()
         {
-			editContext = new(Pet);            
+            editContext = new EditContext(Pet);
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
