@@ -23,6 +23,7 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConne
 
 builder.Services.AddTransient<SeedDb>();
 builder.Services.AddTransient<SeedDbUsers>();
+builder.Services.AddTransient<SeedDbCountries>();
 
 
 builder.Services.AddScoped(typeof(IGenericRespository<>), typeof(GenericRepository<>));
@@ -47,6 +48,9 @@ async void SeedData(WebApplication app)
     {
         var service = scope.ServiceProvider.GetService<SeedDb>();
         service!.SeedAsync().Wait();
+
+        var serviceCountries = scope.ServiceProvider.GetService<SeedDbCountries>();
+        serviceCountries!.SeedAsync().Wait();
 
         var serviceUsers = scope.ServiceProvider.GetService<SeedDbUsers>();
         serviceUsers!.SeedAsync().Wait();

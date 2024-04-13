@@ -7,44 +7,71 @@ using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Countries
 {
-    public partial class CountriesIndex // partial significa que hay dos clases que se llaman lo mismo, pero copiladas generan una sola
+    public partial class CountriesIndex
     {
+        private int currentPage = 1;
+        private int totalPages;
+
         [Inject] private IRepository Repository { get; set; } = null!;
+        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
         public List<Country>? Countries { get; set; }
 
-        [Inject] private SweetAlertService sweetAlertService { get; set; } = null;
-
-        [Inject] private NavigationManager navigationManager { get; set; } = null!; // framework component
-
-        protected async override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
 
-        private async Task LoadAsync()
+        private async Task SelectedPageAsync(int page)
         {
-            var responseHttp = await Repository.GetAsync<List<Country>>("api/countries");
+            currentPage = page;
+            await LoadAsync(page);
+        }
+
+        private async Task LoadAsync(int page = 1)
+        {
+            var ok = await LoadListAsync(page);
+            if (ok)
+            {
+                await LoadPagesAsync();
+            }
+        }
+
+        private async Task<bool> LoadListAsync(int page)
+        {
+            var responseHttp = await Repository.GetAsync<List<Country>>($"api/countries?page={page}");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
-                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
             }
             Countries = responseHttp.Response;
+            return true;
         }
 
-        private async Task DeleteAsync(Country country)
+        private async Task LoadPagesAsync()
         {
+            var responseHttp = await Repository.GetAsync<int>("api/countries/totalPages");
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            totalPages = responseHttp.Response;
+        }
 
-            var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+        private async Task DeleteAsycn(Country country)
+        {
+            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Estas seguro de querer borrar el país {country.Name} ?",
+                Text = $"¿Estas seguro de querer borrar el país: {country.Name}?",
                 Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
+                ShowCancelButton = true,
             });
-
             var confirm = string.IsNullOrEmpty(result.Value);
             if (confirm)
             {
@@ -52,31 +79,29 @@ namespace petConnection.FrontEnd.Pages.Countries
             }
 
             var responseHttp = await Repository.DeleteAsync<Country>($"api/countries/{country.Id}");
-
             if (responseHttp.Error)
             {
                 if (responseHttp.Httpresponsemessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    navigationManager.NavigateTo("/countries");
+                    NavigationManager.NavigateTo("/countries");
                 }
                 else
                 {
-                    var message = await responseHttp.GetErrorMessageAsync();
-                    await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    var mensajeError = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
                 }
                 return;
             }
 
             await LoadAsync();
-
-            var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
                 Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "País borrado con éxito");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
         }
     }
 }
