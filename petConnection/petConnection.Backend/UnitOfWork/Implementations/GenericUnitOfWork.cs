@@ -2,6 +2,7 @@
 using petConnection.Backend.Repositories.Interfaces;
 using petConnection.Backend.UnitOfWork.Interfaces;
 using petConnection.FrontEnd.Shared.Responses;
+using petConnection.Share.DTOs;
 
 namespace petConnection.Backend.UnitOfWork.Implementations
 {
@@ -13,6 +14,10 @@ namespace petConnection.Backend.UnitOfWork.Implementations
         {
             _repository = repository; // el underscore tambien nos permite no tener que utilizar la palabra this
         }
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination) => await _repository.GetAsync(pagination);
+
+        public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _repository.GetTotalPagesAsync(pagination);
 
         public virtual async Task<ActionResponse<T>> AddAsync(T model) => await _repository.AddAsync(model);
 

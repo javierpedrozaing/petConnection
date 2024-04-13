@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using petConnection.Backend.Data;
+using petConnection.Backend.Helpers;
 using petConnection.Backend.Repositories.Interfaces;
 using petConnection.FrontEnd.Shared.Responses;
+using petConnection.Share.DTOs;
 
 namespace petConnection.Backend.Repositories.Implementations
 {
@@ -16,6 +18,31 @@ namespace petConnection.Backend.Repositories.Implementations
         {
             _context = context; // represent all database
             _entity = _context.Set<T>(); // represent entity to modify
+        }
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _entity.AsQueryable();
+
+            return new ActionResponse<IEnumerable<T>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
+        public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _entity.AsQueryable();
+            var count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
+            };
         }
 
 

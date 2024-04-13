@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using petConnection.Backend.Data;
+using petConnection.Backend.Helpers;
 using petConnection.Backend.Repositories.Interfaces;
 using petConnection.FrontEnd.Shared.Responses;
+using petConnection.Share.DTOs;
 using petConnection.Share.Entitties;
 
 namespace petConnection.Backend.Repositories.Implementations
@@ -19,6 +21,7 @@ namespace petConnection.Backend.Repositories.Implementations
         public override async Task<ActionResponse<State>> GetAsync(int id)
         {
             var state = await _context.States
+                .OrderBy(x => x.Name)
                 .Include(s => s.Cities)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
@@ -42,6 +45,7 @@ namespace petConnection.Backend.Repositories.Implementations
         public override async Task<ActionResponse<IEnumerable<State>>> GetAsync()
         {
             var states = await _context.States
+                .OrderBy(x => x.Name)
                 .Include(s => s.Cities)
                 .ToListAsync();
 
@@ -49,6 +53,39 @@ namespace petConnection.Backend.Repositories.Implementations
             {
                 WasSuccess = true,
                 Result = states
+            };
+        }
+
+
+        public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.States
+                .Include(x => x.Cities)
+                .Where(x => x.Country!.Id == pagination.Id)
+                .AsQueryable();
+
+            return new ActionResponse<IEnumerable<State>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .OrderBy(x => x.Name)
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.States
+                .Where(x => x.Country!.Id == pagination.Id)
+                .AsQueryable();
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
             };
         }
     }

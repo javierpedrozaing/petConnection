@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using petConnection.Backend.UnitOfWork.Interfaces;
+using petConnection.Share.DTOs;
 using petConnection.Share.Entitties;
 
 namespace petConnection.Backend.Controllers
@@ -16,7 +17,7 @@ namespace petConnection.Backend.Controllers
             _statesUnitOfWork = statesUnitOfWork;
         }
 
-        [HttpGet]
+        [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
             var action = await _statesUnitOfWork.GetAsync();
@@ -36,6 +37,28 @@ namespace petConnection.Backend.Controllers
                 return Ok(action.Result);
             }
             return NotFound();
+        }
+
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        {
+            var response = await _statesUnitOfWork.GetAsync(pagination);
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("totalPages")]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _statesUnitOfWork.GetTotalPagesAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
         }
     }
 }

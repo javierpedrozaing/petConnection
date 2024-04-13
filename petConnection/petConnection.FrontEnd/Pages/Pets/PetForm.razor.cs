@@ -10,7 +10,7 @@ namespace petConnection.FrontEnd.Pages.Pets
 {
 	public partial class PetForm
     {
-		private EditContext editContext = null!;        
+		private EditContext editContext = null!;
 
         [EditorRequired, Parameter]public Pet Pet { get; set; } = null!;
 

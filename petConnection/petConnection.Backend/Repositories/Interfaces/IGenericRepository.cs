@@ -1,5 +1,6 @@
 ﻿using System;
 using petConnection.FrontEnd.Shared.Responses;
+using petConnection.Share.DTOs;
 
 namespace petConnection.Backend.Repositories.Interfaces
 {
@@ -8,6 +9,10 @@ namespace petConnection.Backend.Repositories.Interfaces
         Task<ActionResponse<T>> GetAsync(int id);
 
         Task<ActionResponse<IEnumerable<T>>> GetAsync(); // devovler lista de una entidad
+
+        Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
 
         Task<ActionResponse<T>> AddAsync(T entity);
 

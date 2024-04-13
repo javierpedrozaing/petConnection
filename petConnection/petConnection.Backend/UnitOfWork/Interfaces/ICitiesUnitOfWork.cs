@@ -5,14 +5,9 @@ using petConnection.Share.Entitties;
 
 namespace petConnection.Backend.UnitOfWork.Interfaces
 {
-    public interface IStatesUnitOfWork
+    public interface ICitiesUnitOfWork
     {
-
-        Task<ActionResponse<IEnumerable<State>>> GetAsync();
-
-        Task<ActionResponse<State>> GetAsync(int id);
-
-        Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination);
+        Task<ActionResponse<IEnumerable<City>>> GetAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
     }

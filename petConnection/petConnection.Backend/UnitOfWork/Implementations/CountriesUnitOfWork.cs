@@ -2,6 +2,7 @@
 using petConnection.Backend.Repositories.Interfaces;
 using petConnection.Backend.UnitOfWork.Interfaces;
 using petConnection.FrontEnd.Shared.Responses;
+using petConnection.Share.DTOs;
 using petConnection.Share.Entitties;
 
 namespace petConnection.Backend.UnitOfWork.Implementations
@@ -17,7 +18,9 @@ namespace petConnection.Backend.UnitOfWork.Implementations
 
         public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync() => await _countriesRepository.GetAsync();
 
-        public override async Task<ActionResponse<Country>> GetAsync(int id) => await _countriesRepository.GetAsync(id);
+        public override async Task<ActionResponse<Country>> GetAsync(int id) => await _countriesRepository.GetAsync(id);        
+
+        public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination) => await _countriesRepository.GetAsync(pagination);
     }
 }
 

@@ -28,6 +28,7 @@
     <None Remove="UnitOfWork\Interfaces\" />
     <None Remove="UnitOfWork\Implementations\" />
     <None Remove="Repositories\Implementations\" />
+    <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -38,6 +39,7 @@
     <Folder Include="UnitOfWork\Interfaces\" />
     <Folder Include="UnitOfWork\Implementations\" />
     <Folder Include="Repositories\Implementations\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">
