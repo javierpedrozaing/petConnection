@@ -12,6 +12,13 @@
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync" />
 
+
+        <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+            <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar país..." @bind-value="Filter" />
+            <button type="button" class="btn btn-outline-primary mx-1" @onclick="ApplyFilterAsync">Filtrar</button>
+            <button type="button" class="btn btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
+        </div>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -25,7 +32,7 @@
                 {
                     <tr>
                         <td>@country.Name</td>
-                        <td>@country.StateNumber </td>
+                        <td>@country.StateNumber</td>
                         <td>
                             <a href="/countries/edit/@country.Id" class="btn btn-sm btn-warning">Editar</a>
                             <a class="btn btn-info btn-sm" href="/countries/details/@country.Id">Detalles</a>
