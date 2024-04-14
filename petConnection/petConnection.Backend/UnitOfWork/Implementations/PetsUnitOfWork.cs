@@ -11,13 +11,13 @@ namespace petConnection.Backend.UnitOfWork.Implementations
     {
         private readonly IPetsRepository _petsRepository;
 
-    public PetsUnitOfWork(IGenericRespository<Pet> repository, IPetsRepository petsRepository) : base(repository)
-    {
-            _petsRepository = petsRepository;
-    }
+        public PetsUnitOfWork(IGenericRespository<Pet> repository, IPetsRepository petsRepository) : base(repository)
+        {
+                _petsRepository = petsRepository;
+        }
 
-    public override async Task<ActionResponse<IEnumerable<Pet>>> GetAsync(PaginationDTO pagination) => await _petsRepository.GetAsync(pagination);
+        public override async Task<ActionResponse<IEnumerable<Pet>>> GetAsync(PaginationDTO pagination) => await _petsRepository.GetAsync(pagination);
 
-    public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _petsRepository.GetTotalPagesAsync(pagination);
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _petsRepository.GetTotalPagesAsync(pagination);
     }
 }

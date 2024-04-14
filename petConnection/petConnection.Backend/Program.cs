@@ -24,6 +24,7 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConne
 builder.Services.AddTransient<SeedDb>();
 builder.Services.AddTransient<SeedDbUsers>();
 builder.Services.AddTransient<SeedDbCountries>();
+builder.Services.AddTransient<SeedDbArticles>();
 
 
 builder.Services.AddScoped(typeof(IGenericRespository<>), typeof(GenericRepository<>));
@@ -37,6 +38,9 @@ builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
 
 builder.Services.AddScoped<IPetsRepository, PetsRepository>();
 builder.Services.AddScoped<IPetsUnitOfWork, PetsUnitOfWork>();
+
+builder.Services.AddScoped<IArticlesRepository, ArticlesRepository>();
+builder.Services.AddScoped<IArticlesUnitOfWork, ArticlesUnitOfWork>();
 
 
 var app = builder.Build();
@@ -58,6 +62,9 @@ void SeedData(WebApplication app)
 
         var serviceUsers = scope.ServiceProvider.GetService<SeedDbUsers>();
         serviceUsers!.SeedAsync().Wait();
+
+        var serviceArticles = scope.ServiceProvider.GetService<SeedDbArticles>();
+        serviceArticles!.SeedAsync().Wait();
     }
 }
 
