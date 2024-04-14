@@ -8,6 +8,10 @@
 
 <GenericList MyList="Pets">
     <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -16,7 +20,7 @@
                     <th>Raza</th>
                     <th>Edad</th>
                     <th>Género</th>
-                    <th>Color</th>                    
+                    <th>Color</th>
                     <th></th>
                 </tr>
             </thead>

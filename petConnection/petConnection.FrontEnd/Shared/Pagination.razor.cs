@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace petConnection.FrontEnd.Shared
 {
-	public partial class Pagination
-	{
-        private List<PageModel> Links = null!;
+    public partial class Pagination
+    {
+        private List<PageModel> links = null!;
 
         [Parameter] public int CurrentPage { get; set; } = 1;
         [Parameter] public int TotalPages { get; set; } = 1;
@@ -14,30 +14,54 @@ namespace petConnection.FrontEnd.Shared
 
         protected override void OnParametersSet()
         {
-            Links = new List<PageModel>();
-            Links.Add(new PageModel
+            links = new List<PageModel>();
+
+            links.Add(new PageModel
             {
                 Text = "Anterior",
-                Page = CurrentPage -1,
+                Page = CurrentPage - 1,
                 Enable = CurrentPage != 1
             });
 
-            for (int i = 1; i<= TotalPages; i++)
+            for (int i = 1; i <= TotalPages; i++)
             {
-                Links.Add(new PageModel
+                if (TotalPages <= Radio)
                 {
-                    Text = $"{i}",
-                    Page = i,
-                    Enable = i == CurrentPage
-                });
+                    links.Add(new PageModel
+                    {
+                        Page = i,
+                        Enable = CurrentPage == i,
+                        Text = $"{i}"
+                    });
+                }
+
+                if (TotalPages > Radio && i <= Radio && CurrentPage <= Radio)
+                {
+                    links.Add(new PageModel
+                    {
+                        Page = i,
+                        Enable = CurrentPage == i,
+                        Text = $"{i}"
+                    });
+                }
+
+                if (CurrentPage > Radio && i > CurrentPage - Radio && i <= CurrentPage)
+                {
+                    links.Add(new PageModel
+                    {
+                        Page = i,
+                        Enable = CurrentPage == i,
+                        Text = $"{i}"
+                    });
+                }
             }
 
-            Links.Add(new PageModel
+            links.Add(new PageModel
             {
                 Text = "Siguiente",
                 Page = CurrentPage != TotalPages ? CurrentPage + 1 : CurrentPage,
                 Enable = CurrentPage != TotalPages
-            });;
+            });
         }
 
         private async Task InternalSelectedPage(PageModel pageModel)
@@ -54,7 +78,6 @@ namespace petConnection.FrontEnd.Shared
             public string Text { get; set; } = null!;
             public int Page { get; set; }
             public bool Enable { get; set; }
-            public bool Active { get; set; }
         }
     }
 }
