@@ -11,7 +11,7 @@ namespace petConnection.Backend.Repositories.Implementations
 {
     public class StatesRepository : GenericRepository<State>, IStatesRepository
     {
-        public readonly DataContext _context;
+        private readonly DataContext _context;
 
         public StatesRepository(DataContext context) : base(context)
         {
@@ -21,10 +21,8 @@ namespace petConnection.Backend.Repositories.Implementations
         public override async Task<ActionResponse<State>> GetAsync(int id)
         {
             var state = await _context.States
-                .OrderBy(x => x.Name)
-                .Include(s => s.Cities)
-                .FirstOrDefaultAsync(s => s.Id == id);
-
+                 .Include(s => s.Cities)
+                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (state == null)
             {
@@ -48,7 +46,6 @@ namespace petConnection.Backend.Repositories.Implementations
                 .OrderBy(x => x.Name)
                 .Include(s => s.Cities)
                 .ToListAsync();
-
             return new ActionResponse<IEnumerable<State>>
             {
                 WasSuccess = true,
@@ -56,13 +53,17 @@ namespace petConnection.Backend.Repositories.Implementations
             };
         }
 
-
         public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination)
         {
             var queryable = _context.States
                 .Include(x => x.Cities)
                 .Where(x => x.Country!.Id == pagination.Id)
                 .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
 
             return new ActionResponse<IEnumerable<State>>
             {
@@ -79,6 +80,11 @@ namespace petConnection.Backend.Repositories.Implementations
             var queryable = _context.States
                 .Where(x => x.Country!.Id == pagination.Id)
                 .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
 
             double count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);

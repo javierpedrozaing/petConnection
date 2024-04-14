@@ -12,6 +12,8 @@ namespace petConnection.Backend.UnitOfWork.Implementations
         Task<ActionResponse<IEnumerable<Country>>> GetAsync(); // devovler lista de una entidad
 
         Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
     }
 }
 

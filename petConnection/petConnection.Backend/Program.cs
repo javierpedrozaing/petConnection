@@ -35,12 +35,16 @@ builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
 
+builder.Services.AddScoped<IPetsRepository, PetsRepository>();
+builder.Services.AddScoped<IPetsUnitOfWork, PetsUnitOfWork>();
+
+
 var app = builder.Build();
 
 // injección manual
 SeedData(app);
 
-async void SeedData(WebApplication app)
+void SeedData(WebApplication app)
 {
     var scopeFactory = app.Services.GetService<IServiceScopeFactory>();
 
