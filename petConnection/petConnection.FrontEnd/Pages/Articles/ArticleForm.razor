@@ -1,0 +1,28 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="petName">Title</label>
+        <InputText class="form-control" @bind-Value="@Article.Title" id="petName" placeholder="Nombre de la mascota" />
+    </div>
+
+    <div class="form-group">
+        <label for="petGender">Text</label>
+        <InputSelect class="form-control" @bind-Value="@Article.Text" id="petGender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label for="petPhoto">Photo</label>
+        <InputFile class="form-control-file" OnChange="HandleFileSelected" />
+        @if (selectedImage != null)
+        {
+            <img src="@selectedImage" alt="Selected Image" style="max-width: 100px; max-height: 100px;" />
+        }
+    </div>
+</EditForm>
