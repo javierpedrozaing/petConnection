@@ -3,6 +3,7 @@ using System.Net;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Repositories;
+using petConnection.FrontEnd.Shared;
 using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Articles
@@ -10,7 +11,7 @@ namespace petConnection.FrontEnd.Pages.Articles
 	public partial class ArticlesIndex
 	{
         private int currentPage = 1;
-        private int totalPages;
+        private int totalPages;        
 
         [Inject] private IRepository Repository { get; set; } = null!;
 
@@ -21,6 +22,7 @@ namespace petConnection.FrontEnd.Pages.Articles
         [Inject] private NavigationManager navigationManager { get; set; } = null!; // framework component
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
+
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
         protected override async Task OnInitializedAsync()
@@ -97,16 +99,17 @@ namespace petConnection.FrontEnd.Pages.Articles
             totalPages = responseHttp.Response;
         }
 
-
         private async Task CleanFilterAsync()
         {
             Filter = string.Empty;
-            await ApplyFilterAsync();
+            ApplyFilterAsync(Filter);
         }
 
-        private async Task ApplyFilterAsync()
+
+        private async Task ApplyFilterAsync(string value)
         {
             int page = 1;
+            Filter = value;
             await LoadAsync(page);
             await SelectedPageAsync(page);
         }

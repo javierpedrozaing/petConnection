@@ -19,7 +19,6 @@ namespace petConnection.FrontEnd.Pages.Countries
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
-
         public List<Country>? Countries { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -87,12 +86,13 @@ namespace petConnection.FrontEnd.Pages.Countries
         private async Task CleanFilterAsync()
         {
             Filter = string.Empty;
-            await ApplyFilterAsync();
+            await ApplyFilterAsync(Filter);
         }
 
-        private async Task ApplyFilterAsync()
+        private async Task ApplyFilterAsync(string value)
         {
             int page = 1;
+            Filter = value;
             await LoadAsync(page);
             await SelectedPageAsync(page);
         }

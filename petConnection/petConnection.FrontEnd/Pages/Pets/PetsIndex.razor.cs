@@ -103,12 +103,13 @@ namespace petConnection.FrontEnd.Pages.Pets
         private async Task CleanFilterAsync()
         {
             Filter = string.Empty;
-            await ApplyFilterAsync();
+            await ApplyFilterAsync(Filter);
         }
 
-        private async Task ApplyFilterAsync()
+        private async Task ApplyFilterAsync(string value)
         {
             int page = 1;
+            Filter = value;
             await LoadAsync(page);
             await SelectedPageAsync(page);
         }
