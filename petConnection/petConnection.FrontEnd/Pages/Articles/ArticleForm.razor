@@ -5,24 +5,24 @@
     <DataAnnotationsValidator />
 
     <div class="form-group">
-        <label for="petName">Title</label>
-        <InputText class="form-control" @bind-Value="@Article.Title" id="petName" placeholder="Nombre de la mascota" />
+        <label for="title">Title</label>
+        <InputText class="form-control" @bind-Value="@Article.Title" id="title" placeholder="Nombre de la mascota" />
     </div>
 
     <div class="form-group">
-        <label for="petGender">Text</label>
-        <InputSelect class="form-control" @bind-Value="@Article.Text" id="petGender">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </InputSelect>
+        <label for="text">Text</label>        
+        <InputTextArea class="form-control" @bind-Value="@Article.Text"></InputTextArea>
     </div>
 
     <div class="form-group">
-        <label for="petPhoto">Photo</label>
+        <label for="image">Photo</label>
         <InputFile class="form-control-file" OnChange="HandleFileSelected" />
         @if (selectedImage != null)
         {
             <img src="@selectedImage" alt="Selected Image" style="max-width: 100px; max-height: 100px;" />
         }
     </div>
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
 </EditForm>

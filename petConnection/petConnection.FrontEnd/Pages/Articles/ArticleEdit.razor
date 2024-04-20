@@ -1,6 +1,17 @@
-﻿<h3>Component1</h3>
+﻿@page "/articles/edit/{Id:int}"
 
-@code {
+<h3>Editar artículo </h3>
 
+@if (article is null)
+{
+    <Loading/>
 }
+else
+{
 
+    <ArticleForm @ref="articleForm"
+                 Article="article"
+                 OnValidSubmit="EditArticleAsync"
+                 ReturnAction="Return">
+    </ArticleForm>
+}

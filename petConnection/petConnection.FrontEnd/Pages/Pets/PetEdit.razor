@@ -2,4 +2,11 @@
 
 <h3>Editar mascota</h3>
 
-<PetForm @ref="petForm" Pet="pet" OnValidSubmit="EditPetAsync" ReturnAction="Return"></PetForm>
+@if (pet is null)
+{
+    <Loading />
+}
+else
+{
+    <PetForm @ref="petForm" Pet="pet" OnValidSubmit="EditPetAsync" ReturnAction="Return"></PetForm>
+}

@@ -3,6 +3,7 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
 using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Articles
@@ -13,7 +14,9 @@ namespace petConnection.FrontEnd.Pages.Articles
 
         private string selectedImage = null!;
 
-		[EditorRequired, Parameter] public Article Article { get; set; } = null;
+        private string RootPath = "./wwroot/uploads";
+
+        [EditorRequired, Parameter] public Article Article { get; set; } = null;
 
         [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
 
@@ -21,9 +24,14 @@ namespace petConnection.FrontEnd.Pages.Articles
 
         [Inject] public SweetAlertService SweetAlertService { get; set; } = null!;
 
-        public bool FormPostedSuccessfully { get; set; }        
+        public bool FormPostedSuccessfully { get; set; }
 
-        protected override void OnInitialized()
+        protected override void OnParametersSet()
+        {
+            editContext = new EditContext(Article);
+        }
+
+        protected override async void OnInitialized()
         {
             editContext = new EditContext(Article);
         }
@@ -65,6 +73,10 @@ namespace petConnection.FrontEnd.Pages.Articles
                 var buffer = new byte[imageStream.Length];
                 await imageStream.ReadAsync(buffer, 0, (int)imageStream.Length);
                 selectedImage = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+
+                var photoPath = Path.Combine(RootPath, file.Name);
+                Article.PhotoPath = photoPath;              
+
             }
         }
     }

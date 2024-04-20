@@ -31,10 +31,14 @@
     <Folder Include="Shared\Responses\" />
     <Folder Include="Pages\Pets\" />
     <Folder Include="Pages\Articles\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\uploads\" />
   </ItemGroup>
 </Project>

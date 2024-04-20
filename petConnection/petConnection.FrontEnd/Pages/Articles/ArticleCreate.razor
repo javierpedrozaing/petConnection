@@ -1,6 +1,9 @@
-﻿<h3>Component1</h3>
+﻿@page "/articles/create"
 
-@code {
-
-}
-
+<h3>Component1</h3>
+<ArticleForm
+  @ref="articleForm"
+  Article="article"
+  OnValidSubmit="CreateAsync"
+  ReturnAction="Return">
+</ArticleForm>
