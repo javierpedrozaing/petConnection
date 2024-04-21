@@ -1,0 +1,11 @@
+﻿<label>Numero de registros a mostrar</label>
+<div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">    
+    <select class="form-control" @bind="@SelectedValue" style="width:100px;">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="1000">Todos</option>
+    </select>
+
+    <button type="button" class="btn-outline-primary mx-1" @onclick="UpdateList">Aplicar</button>
+</div>

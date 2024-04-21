@@ -10,7 +10,8 @@ namespace petConnection.FrontEnd.Shared
         [Parameter] public int CurrentPage { get; set; } = 1;
         [Parameter] public int TotalPages { get; set; } = 1;
         [Parameter] public int Radio { get; set; } = 10;
-        [Parameter] public EventCallback<int> SelectedPage { get; set; }
+        [Parameter] public int TotalRecords { get; set; } = 10;
+        [Parameter] public EventCallback<(int, int)> SelectedPage { get; set; }
 
         protected override void OnParametersSet()
         {
@@ -70,7 +71,7 @@ namespace petConnection.FrontEnd.Shared
             {
                 return;
             }
-            await SelectedPage.InvokeAsync(pageModel.Page);
+            await SelectedPage.InvokeAsync((pageModel.Page, 10));
         }
 
         private class PageModel

@@ -24,6 +24,7 @@ namespace petConnection.FrontEnd.Pages.Pets
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
+        [Parameter, SupplyParameterFromQuery] public int Records { get; set; } = 10;
 
         protected override async Task OnInitializedAsync()
         {
@@ -42,29 +43,39 @@ namespace petConnection.FrontEnd.Pages.Pets
             Pets = responseHttp.Response;
         }
 
-        private async Task SelectedPageAsync(int page)
+        private async Task SelectedPageAsync((int, int) pageData)
         {
-            currentPage = page;
-            await LoadAsync(page);
+            currentPage = pageData.Item1;
+            await LoadAsync(currentPage, pageData.Item2);
         }
 
-        private async Task LoadAsync(int page = 1)
+        private async Task LoadAsync(int page = 1, int totalRecords = 10)
         {
             if (!string.IsNullOrWhiteSpace(Page))
             {
                 page = Convert.ToInt32(Page);
             }
 
-            var ok = await LoadListAsync(page);
+            var ok = await LoadListAsync(page, totalRecords);
             if (ok)
             {
                 await LoadPagesAsync();
             }
         }
 
-        private async Task<bool> LoadListAsync(int page)
+        private async Task<bool> LoadListAsync(int page, int totalRecords)
         {
-            var url = $"api/pets?page={page}";
+            var url = "";
+
+            if (totalRecords == 1000)
+            {
+                url = $"api/pets/full";
+            }
+            else
+            {
+                url = $"api/pets?page={page}&RecordsNumber={totalRecords}";
+            }
+
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -89,6 +100,11 @@ namespace petConnection.FrontEnd.Pages.Pets
                 url += $"?filter={Filter}";
             }
 
+            if (Records > 0)
+            {
+                url += $"?RecordsNumber={Records}";
+            }
+
             var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {
@@ -111,7 +127,14 @@ namespace petConnection.FrontEnd.Pages.Pets
             int page = 1;
             Filter = value;
             await LoadAsync(page);
-            await SelectedPageAsync(page);
+            await SelectedPageAsync((page, Records));
+        }
+
+        private async Task HandlePageSizeChanged(int value)
+        {
+            int page = 1;
+            Records = value;
+            await LoadAsync(page, Records);
         }
 
         private async Task DeleteAsync(Pet pet)

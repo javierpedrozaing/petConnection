@@ -8,16 +8,19 @@
 
 <GenericList MyList="Articles">
     <Body>
+
+        <DropDownRecords UpdateListAsync="HandlePageSizeChanged" />
+
         <Pagination CurrentPage="currentPage"
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync" />
 
-        <Filter TModel="Article" ApplyFilterAsync="ApplyFilterAsync" CleanFilterAsync="CleanFilterAsync"/>
+        <Filter TModel="Article" ApplyFilterAsync="ApplyFilterAsync" CleanFilterAsync="CleanFilterAsync" />
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Title</th>                    
+                    <th>Title</th>
                     <th>Photo</th>
                     <th>Fecha de Creación</th>
                     <th></th>
@@ -27,7 +30,7 @@
                 @foreach (var article in Articles!)
                 {
                     <tr>
-                        <td>@article.Title</td>                        
+                        <td>@article.Title</td>
                         <td style="width:100px;"><img src="@article.PhotoPath" class="img-thumbnail"></td>
                         <td>@article.CreatedAt</td>
                         <td>

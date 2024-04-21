@@ -8,11 +8,13 @@
 
 <GenericList MyList="Pets">
     <Body>
+        <DropDownRecords UpdateListAsync="HandlePageSizeChanged" />
+
         <Pagination CurrentPage="currentPage"
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync" />
 
-        <Filter TModel="Pet" ApplyFilterAsync="ApplyFilterAsync" CleanFilterAsync="CleanFilterAsync"/>
+        <Filter TModel="Pet" ApplyFilterAsync="ApplyFilterAsync" CleanFilterAsync="CleanFilterAsync" />
 
         <table class="table table-striped">
             <thead>
