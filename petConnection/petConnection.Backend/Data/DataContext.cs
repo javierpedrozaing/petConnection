@@ -16,16 +16,18 @@ namespace petConnection.Backend.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Article> Articles { get; set; }
+        public DbSet<SuccessCase> SuccessCases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);            
-            modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Pet>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<Article>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<City>().HasIndex(x => new { x.StateId, x.Name }).IsUnique();
             modelBuilder.Entity<State>().HasIndex(x => new { x.CountryId, x.Name }).IsUnique();
+            modelBuilder.Entity<SuccessCase>().HasIndex(x => x.Id).IsUnique();
             DisableCascadingDelete(modelBuilder);
         }
 

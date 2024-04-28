@@ -21,17 +21,13 @@ namespace petConnection.Backend.Data
 
         private async Task CheckPetsAsync()
         {
-            _context.Database.EnsureCreated();
-
             if (!_context.Users.Any())
             {
-                // Seed Users
-                var users = new List<User>
-            {
-                new User
+                // Seed User
+                var user = new User
                 {
-                    UserName = "user1",
-                    Email = "user1@example.com",
+                    UserName = "user1000",
+                    Email = "user100@example.com",
                     Password = "password",
                     Role = "Admin",
                     Profile = new Profile
@@ -45,36 +41,33 @@ namespace petConnection.Backend.Data
                         Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
                     },
                     Pets = new List<Pet>()
-                }
-            };
+                };
 
                 // Seed Pets
                 var random = new Random();
-                foreach (var user in users)
+                for (int i = 1; i <= 12; i++)
                 {
-                    for (int i = 1; i <= 12; i++)
+                    var pet = new Pet
                     {
-                        var pet = new Pet
-                        {
-                            Name = GenerateRandomNames(i).First(),
-                            Specie = GetRandomSpecie(),
-                            Race = GetRandomRace(),
-                            Age = random.Next(1, 15),
-                            Gender = GetRandomGender(),
-                            Size = GetRandomSize(),
-                            Weight = $"{random.Next(5, 50)} lbs",
-                            Color = GetRandomColor(),
-                            HealthCondition = GetRandomHealthCondition(),
-                            Behavior = GetRandomBehavior(),
-                            //Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
-                        };
-                        user.Pets.Add(pet);
-                    }
+                        Name = GenerateRandomNames(1)[0], // GenerateRandomNames returns an array, but you only need one name
+                        Specie = GetRandomSpecie(),
+                        Race = GetRandomRace(),
+                        Age = random.Next(1, 15),
+                        Gender = GetRandomGender(),
+                        Size = GetRandomSize(),
+                        Weight = $"{random.Next(5, 50)} lbs",
+                        Color = GetRandomColor(),
+                        HealthCondition = GetRandomHealthCondition(),
+                        Behavior = GetRandomBehavior(),
+                        Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
+                    };
+                    user.Pets.Add(pet);
                 }
+
                 // Add to context and save changes
-                _context.AddRange(users);
-                _context.SaveChanges();
-            }         
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
         }
 
         private string[] GenerateRandomNames(int count)

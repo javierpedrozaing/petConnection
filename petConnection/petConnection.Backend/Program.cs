@@ -25,6 +25,7 @@ builder.Services.AddTransient<SeedDb>();
 builder.Services.AddTransient<SeedDbUsers>();
 builder.Services.AddTransient<SeedDbCountries>();
 builder.Services.AddTransient<SeedDbArticles>();
+builder.Services.AddTransient<SeedDbSuccessCases>();
 
 
 builder.Services.AddScoped(typeof(IGenericRespository<>), typeof(GenericRepository<>));
@@ -41,6 +42,9 @@ builder.Services.AddScoped<IPetsUnitOfWork, PetsUnitOfWork>();
 
 builder.Services.AddScoped<IArticlesRepository, ArticlesRepository>();
 builder.Services.AddScoped<IArticlesUnitOfWork, ArticlesUnitOfWork>();
+
+builder.Services.AddScoped<ISuccessCasesRepository, SuccessCasesRepository>();
+builder.Services.AddScoped<ISuccessCasesUnitOfWork, SuccessCasesUnitOfWork>();
 
 
 var app = builder.Build();
@@ -65,6 +69,9 @@ void SeedData(WebApplication app)
 
         var serviceArticles = scope.ServiceProvider.GetService<SeedDbArticles>();
         serviceArticles!.SeedAsync().Wait();
+
+        var serviceSuccessCases = scope.ServiceProvider.GetService<SeedDbSuccessCases>();
+        serviceSuccessCases!.SeedAsync().Wait();
     }
 }
 

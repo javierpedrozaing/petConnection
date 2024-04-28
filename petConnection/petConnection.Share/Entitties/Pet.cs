@@ -10,24 +10,31 @@ namespace petConnection.Share.Entitties
         public int UserId { get; set; }
 
         [MaxLength(255)]
+        [Display(Name = "Nombre")]
         public string Name { get; set; }
 
         [MaxLength(255)]
+        [Display(Name = "Especie")]
         public string Specie { get; set; }
 
         [Required]
+        [Display(Name = "Raza")]
         public string Race { get; set; }
 
         [Required]
+        [Display(Name = "Edad")]
         public int Age { get; set; }
 
         [Required]
+        [Display(Name = "Gémero")]
         public string Gender { get; set; }
 
         [Required]
+        [Display(Name = "Tamaño")]
         public string Size { get; set; }
          
         [Required]
+        [Display(Name = "Peso")]
         public string Weight { get; set; }
 
         [Required]
@@ -39,9 +46,8 @@ namespace petConnection.Share.Entitties
         [Required]
         public string Behavior { get; set; }
 
-        // temporal commented
-        //[Required]
-        //public string Photo { get; set; }
+        [Required]
+        public string Photo { get; set; } = null!;
 
         public User? User { get; set; }
     }

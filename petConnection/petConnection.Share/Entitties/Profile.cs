@@ -10,7 +10,6 @@ namespace petConnection.Share.Entitties
 	{
         public int Id { get; set; }
 
-        [Key]
         public int UserId { get; set; }
 
         [Display(Name = "Nombre")]
