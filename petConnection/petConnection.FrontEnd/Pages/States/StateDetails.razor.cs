@@ -1,16 +1,18 @@
-﻿using System;
+﻿using System.Diagnostics.Metrics;
+using System.Net;
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Repositories;
+using petConnection.FrontEnd.Shared;
 using petConnection.Share.Entitties;
-using System.Net;
 
-namespace petConnection.FrontEnd.Pages.Countries
-{
-    public partial class CountriesDetails
+namespace petConnection.FrontEnd.Pages.States
+{    
+    public partial class StateDetails
     {
-        private Country? country;
-        private List<State>? states;
+        private State? state;
+        private List<City>? cities;
         private int currentPage = 1;
         private int totalPages;
 
@@ -18,35 +20,52 @@ namespace petConnection.FrontEnd.Pages.Countries
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
 
-        [Parameter] public int CountryId { get; set; }
+        [Parameter] public int StateId { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public int Records { get; set; } = 10;
 
-        public List<State>? States { get; set; }
-
         protected override async Task OnInitializedAsync()
         {
-            await LoadStatesAsync();
+            await LoadCitiesAsync();
         }
 
         private async Task SelectedPageAsync((int, int) pageData)
         {
             currentPage = pageData.Item1;
-            await LoadStatesAsync(currentPage, pageData.Item2);
+            await LoadCitiesAsync(currentPage, pageData.Item2);
         }
 
-        private async Task LoadStatesAsync(int page = 1, int totalRecords = 10)
+        private async Task LoadCitiesAsync(int page = 1, int totalRecords = 10)
         {
-            var ok = await LoadCountryAsync();
+            var ok = await LoadStateAsync();
             if (ok)
             {
-                ok = await LoadStatesAsync(page);
+                ok = await LoadCitiesAsync(page);
                 if (ok)
                 {
                     await LoadPagesAsync();
                 }
             }
+        }
+
+        private async Task<bool> LoadCitiesAsync(int page)
+        {
+            var url = $"api/cities?id={StateId}&page={page}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<List<City>>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            cities = responseHttp.Response;
+            return true;
         }
 
         private async Task<bool> LoadListAsync(int page, int totalRecords)
@@ -55,11 +74,11 @@ namespace petConnection.FrontEnd.Pages.Countries
 
             if (totalRecords == 1000)
             {
-                url = $"api/states/full";
+                url = $"api/cities/full";
             }
             else
             {
-                url = $"api/states?page={page}&RecordsNumber={totalRecords}";
+                url = $"api/cities?page={page}&RecordsNumber={totalRecords}";
             }
 
             if (!string.IsNullOrEmpty(Filter))
@@ -67,15 +86,22 @@ namespace petConnection.FrontEnd.Pages.Countries
                 url += $"&filter={Filter}";
             }
 
-            var responseHttp = await Repository.GetAsync<List<State>>(url);
+            var responseHttp = await Repository.GetAsync<List<City>>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return false;
             }
-            States = responseHttp.Response;
+            cities = responseHttp.Response;
             return true;
+        }
+
+        private async Task HandlePageSizeChanged(int value)
+        {
+            int page = 1;
+            Records = value;
+            await LoadCitiesAsync(page, Records);
         }
 
         private async Task LoadAsync(int page = 1, int totalRecords = 10)
@@ -94,7 +120,7 @@ namespace petConnection.FrontEnd.Pages.Countries
 
         private async Task LoadPagesAsync()
         {
-            var url = $"api/states/totalPages?id={CountryId}";
+            var url = $"api/cities/totalPages?id={StateId}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -110,64 +136,10 @@ namespace petConnection.FrontEnd.Pages.Countries
             totalPages = responseHttp.Response;
         }
 
-        private async Task<bool> LoadStatesAsync(int page)
-        {
-            var url = $"api/states?id={CountryId}&page={page}";
-            if (!string.IsNullOrEmpty(Filter))
-            {
-                url += $"&filter={Filter}";
-            }
-
-            var responseHttp = await Repository.GetAsync<List<State>>(url);
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return false;
-            }
-            states = responseHttp.Response;
-            return true;
-        }
-
         private async Task CleanFilterAsync()
         {
             Filter = string.Empty;
-            await ApplyStatesFilterAsync(Filter);
-        }
-   
-        private async Task ApplyStatesFilterAsync(string value)
-        {
-            int page = 1;
-            Filter = value;
-            await LoadAsync(page);
-            await SelectedPageAsync((page, Records));
-        }
-
-        private async Task<bool> LoadCountryAsync()
-        {
-            var responseHttp = await Repository.GetAsync<Country>($"/api/countries/{CountryId}");
-            if (responseHttp.Error)
-            {
-                if (responseHttp.Httpresponsemessage.StatusCode == HttpStatusCode.NotFound)
-                {
-                    NavigationManager.NavigateTo("/countries");
-                    return false;
-                }
-
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return false;
-            }
-            country = responseHttp.Response;
-            return true;
-        }
-
-        
-        private async Task HandlePageSizeChanged(int value)
-        {
-            int page = 1;
-            Records = value;
-            await LoadAsync(page, Records);
+            await ApplyFilterAsync(Filter);
         }
 
         private async Task ApplyFilterAsync(string value)
@@ -178,12 +150,31 @@ namespace petConnection.FrontEnd.Pages.Countries
             await SelectedPageAsync((page, Records));
         }
 
-        private async Task DeleteAsync(State state)
+        private async Task<bool> LoadStateAsync()
+        {
+            var responseHttp = await Repository.GetAsync<State>($"api/states/{StateId}");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.Httpresponsemessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/states");
+                    return false;
+                }
+
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            state = responseHttp.Response;
+            return true;
+        }
+
+        private async Task DeleteAsync(City city)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Realmente deseas eliminar el departamento/estado? {state.Name}",
+                Text = $"¿Realmente deseas eliminar la ciudad? {city.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "No",
@@ -196,7 +187,7 @@ namespace petConnection.FrontEnd.Pages.Countries
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<State>($"/api/states/{state.Id}");
+            var responseHttp = await Repository.DeleteAsync<City>($"/api/cities/{city.id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.Httpresponsemessage.StatusCode != HttpStatusCode.NotFound)
@@ -207,7 +198,7 @@ namespace petConnection.FrontEnd.Pages.Countries
                 }
             }
 
-            await LoadAsync();
+            await LoadCitiesAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -219,4 +210,3 @@ namespace petConnection.FrontEnd.Pages.Countries
         }
     }
 }
-

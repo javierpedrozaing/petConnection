@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using petConnection.Backend.UnitOfWork.Implementations;
 using petConnection.Backend.UnitOfWork.Interfaces;
 using petConnection.Share.DTOs;
 using petConnection.Share.Entitties;
@@ -16,6 +17,30 @@ namespace petConnection.Backend.Controllers
         {
             _citiesUnitOfWork = citiesUnitOfWork;
         }
+
+
+        [HttpGet("full")]
+        public override async Task<IActionResult> GetAsync()
+        {
+            var action = await _citiesUnitOfWork.GetAsync();
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("{id}")]
+        public override async Task<IActionResult> GetAsync(int id)
+        {
+            var action = await _citiesUnitOfWork.GetAsync(id);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return NotFound();
+        }
+
 
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)

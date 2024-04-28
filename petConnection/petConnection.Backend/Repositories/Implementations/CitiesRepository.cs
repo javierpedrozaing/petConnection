@@ -18,6 +18,27 @@ namespace petConnection.Backend.Repositories.Implementations
             _context = context;
         }
 
+        public override async Task<ActionResponse<City>> GetAsync(int id)
+        {
+            var city = _context.Cities                
+                .Where(s => s.id == id);
+
+            if (city == null)
+            {
+                return new ActionResponse<City>
+                {
+                    WasSuccess = false,
+                    Message = "Estado no existe"
+                };
+            }
+
+            return new ActionResponse<City>
+            {
+                WasSuccess = true,
+                Result = (City)city
+            };
+        }
+
         public override async Task<ActionResponse<IEnumerable<City>>> GetAsync(PaginationDTO pagination)
         {
             var queryable = _context.Cities
