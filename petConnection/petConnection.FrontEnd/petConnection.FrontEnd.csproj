@@ -24,6 +24,7 @@
     <None Remove="Shared\Responses\" />
     <None Remove="Pages\Pets\" />
     <None Remove="Pages\Articles\" />
+    <None Remove="Pages\SuccessCases\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
@@ -32,6 +33,7 @@
     <Folder Include="Pages\Pets\" />
     <Folder Include="Pages\Articles\" />
     <Folder Include="wwwroot\uploads\" />
+    <Folder Include="Pages\SuccessCases\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">

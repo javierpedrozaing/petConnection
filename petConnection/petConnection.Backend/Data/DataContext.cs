@@ -27,7 +27,7 @@ namespace petConnection.Backend.Data
             modelBuilder.Entity<Article>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<City>().HasIndex(x => new { x.StateId, x.Name }).IsUnique();
             modelBuilder.Entity<State>().HasIndex(x => new { x.CountryId, x.Name }).IsUnique();
-            modelBuilder.Entity<SuccessCase>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<SuccessCase>().HasIndex(x => x.Id).IsUnique();
             DisableCascadingDelete(modelBuilder);
         }
 

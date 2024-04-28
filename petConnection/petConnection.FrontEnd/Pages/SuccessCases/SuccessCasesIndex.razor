@@ -1,0 +1,45 @@
+﻿@page "/successCases";
+
+<h3>Casoes Exitosos</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/successCase/create">Crear nuevo caso de éxito</a>
+</div>
+
+<GenericList MyList="SuccessCases">
+    <Body>
+        <DropDownRecords UpdateListAsync="HandlePageSizeChanged" />
+
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+
+        <Filter TModel="SuccessCase" ApplyFilterAsync="ApplyFilterAsync" CleanFilterAsync="CleanFilterAsync" />
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>             
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var successCase in SuccessCases!)
+                {
+                    <tr>
+                        <td>@successCase.Name</td>
+                        <td>@successCase.Description</td>
+                        <td>@successCase.Status</td>                        
+                        <td>
+                            <a href="/successCases/edit/@successCase.Id" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="/successCases/details/@successCase.Id" class="btn btn-info btn-sm">Detalless</a>
+                            <button @onclick="@(() => DeleteAsync(successCase))" class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

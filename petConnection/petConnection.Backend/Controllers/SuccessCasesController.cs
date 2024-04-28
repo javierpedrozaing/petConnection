@@ -8,7 +8,7 @@ using petConnection.Share.Entitties;
 namespace petConnection.Backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/successCases")]
     public class SuccessCasesController : GenericController<SuccessCase>
     {
         private readonly ISuccessCasesUnitOfWork _successCasesUnitOfWork;

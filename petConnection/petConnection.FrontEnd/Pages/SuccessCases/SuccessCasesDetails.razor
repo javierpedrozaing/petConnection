@@ -1,0 +1,20 @@
+﻿@page "/successCases/details/{Id:int}"
+
+@if (successCase is null)
+{
+    <Loading />
+}
+else
+{
+    <div class="mb-2">
+        <a class="btn btn-success" href="/successCases">Regresar</a>
+    </div>
+   
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text"><small class="text-muted">Nombre: @successCase.Name</small></p>
+            <h5 class="card-title">@successCase.Description</h5>
+            <p class="card-text">@successCase.Status.</p>
+        </div>
+    </div>
+}
