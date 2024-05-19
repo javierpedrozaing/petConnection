@@ -10,14 +10,13 @@ namespace petConnection.Backend.Repositories.Implementations
 {
     public class GenericRepository<T> : IGenericRespository<T> where T : class
     {
-
+        private readonly DataContext _context;
         private readonly DbSet<T> _entity;
-        private readonly DataContext _context; // underline for private attributes
 
         public GenericRepository(DataContext context)
         {
-            _context = context; // represent all database
-            _entity = _context.Set<T>(); // represent entity to modify
+            _context = context;
+            _entity = _context.Set<T>();
         }
 
         public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
@@ -45,34 +44,44 @@ namespace petConnection.Backend.Repositories.Implementations
             };
         }
 
-
-        // virtual significa que son metodos que se pueden sobreescribir
         public virtual async Task<ActionResponse<T>> AddAsync(T entity)
         {
             _context.Add(entity);
-
             try
             {
                 await _context.SaveChangesAsync();
-                return new ActionResponse<T> { WasSuccess = true, Result = entity };
+                return new ActionResponse<T>
+                {
+                    WasSuccess = true,
+                    Result = entity
+                };
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
-                return DbUpdateExceptionactionResponse();
+                if (ex.InnerException != null)
+                {
+                    if (ex.InnerException!.Message.Contains("duplicate"))
+                    {
+                        return DbUpdateExceptionActionResponse();
+                    }
+                }
+
+                return new ActionResponse<T>
+                {
+                    WasSuccess = false,
+                    Message = ex.Message
+                };
             }
             catch (Exception exception)
             {
-                return ExceptionactionResponse(exception);
+                return ExceptionActionResponse(exception);
             }
-
         }
-
 
         public virtual async Task<ActionResponse<T>> DeleteAsync(int id)
         {
             var row = await _entity.FindAsync(id);
-
-            if (row is null)
+            if (row == null)
             {
                 return new ActionResponse<T>
                 {
@@ -87,7 +96,7 @@ namespace petConnection.Backend.Repositories.Implementations
                 await _context.SaveChangesAsync();
                 return new ActionResponse<T>
                 {
-                    WasSuccess = true,
+                    WasSuccess = true
                 };
             }
             catch
@@ -95,7 +104,7 @@ namespace petConnection.Backend.Repositories.Implementations
                 return new ActionResponse<T>
                 {
                     WasSuccess = false,
-                    Message = "No se puede borrar por que tiene registros relacionados"
+                    Message = "No se pude borrar, porque tiene registros relacionados."
                 };
             }
         }
@@ -103,8 +112,7 @@ namespace petConnection.Backend.Repositories.Implementations
         public virtual async Task<ActionResponse<T>> GetAsync(int id)
         {
             var row = await _entity.FindAsync(id);
-
-            if (row is null)
+            if (row == null)
             {
                 return new ActionResponse<T>
                 {
@@ -116,9 +124,8 @@ namespace petConnection.Backend.Repositories.Implementations
             return new ActionResponse<T>
             {
                 WasSuccess = true,
-                Result = row,
+                Result = row
             };
-
         }
 
         public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync()
@@ -133,38 +140,52 @@ namespace petConnection.Backend.Repositories.Implementations
         public virtual async Task<ActionResponse<T>> UpdateAsync(T entity)
         {
             _context.Update(entity);
-
             try
             {
                 await _context.SaveChangesAsync();
-                return new ActionResponse<T> { WasSuccess = true, Result = entity };
+                return new ActionResponse<T>
+                {
+                    WasSuccess = true,
+                    Result = entity
+                };
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
-                return DbUpdateExceptionactionResponse();
+                if (ex.InnerException != null)
+                {
+                    if (ex.InnerException!.Message.Contains("duplicate"))
+                    {
+                        return DbUpdateExceptionActionResponse();
+                    }
+                }
+
+                return new ActionResponse<T>
+                {
+                    WasSuccess = false,
+                    Message = ex.Message
+                };
             }
             catch (Exception exception)
             {
-                return ExceptionactionResponse(exception);
+                return ExceptionActionResponse(exception);
             }
         }
 
+        private ActionResponse<T> DbUpdateExceptionActionResponse()
+        {
+            return new ActionResponse<T>
+            {
+                WasSuccess = false,
+                Message = "Ya existe el registro que estas intentando crear."
+            };
+        }
 
-        private ActionResponse<T> ExceptionactionResponse(Exception exception)
+        private ActionResponse<T> ExceptionActionResponse(Exception exception)
         {
             return new ActionResponse<T>
             {
                 WasSuccess = false,
                 Message = exception.Message
-            };
-        }
-
-        private ActionResponse<T> DbUpdateExceptionactionResponse()
-        {
-            return new ActionResponse<T>
-            {
-                WasSuccess = false,
-                Message = "Ya existe el registro que quieres crear"
             };
         }
     }
