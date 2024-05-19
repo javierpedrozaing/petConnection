@@ -29,7 +29,8 @@
     <None Remove="Pages\SuccessCases\" />
     <None Remove="Helpers\" />
     <None Remove="Services\" />
-    <None Remove="AuthenticationProvider\" />
+    <None Remove="Pages\Auth\" />
+    <None Remove="AuthenticationProviders\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
@@ -41,7 +42,8 @@
     <Folder Include="Pages\SuccessCases\" />
     <Folder Include="Helpers\" />
     <Folder Include="Services\" />
-    <Folder Include="AuthenticationProvider\" />
+    <Folder Include="Pages\Auth\" />
+    <Folder Include="AuthenticationProviders\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">
