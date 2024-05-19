@@ -10,8 +10,6 @@ namespace petConnection.Share.Entitties
 	{
         public int Id { get; set; }
 
-        public int UserId { get; set; }
-
         [Display(Name = "Nombre")]
         [MaxLength(255)]
         [Required(ErrorMessage = "El campo {0} es requerido.")]
@@ -40,8 +38,6 @@ namespace petConnection.Share.Entitties
 
         [Display(Name = "Foto")]
         public string Photo { get; set; } = null!;
-
-        public User? User { get; set; } = null!;
     }
 }
 

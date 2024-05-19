@@ -21,53 +21,33 @@ namespace petConnection.Backend.Data
 
         private async Task CheckPetsAsync()
         {
-            //if (!_context.Users.Any())
-            //{
-            //    // Seed User
-            //    var user = new User
-            //    {
-            //        UserName = "user1000",
-            //        Email = "user100@example.com",
-            //        Password = "password",
-            //        Role = "Admin",
-            //        Profile = new Profile
-            //        {
-            //            Name = "John",
-            //            LastName = "Doe",
-            //            Age = 30,
-            //            Address = "123 Main St",
-            //            Role = "Admin",
-            //            Phone = "123-456-7890",
-            //            Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
-            //        },
-            //        Pets = new List<Pet>()
-            //    };
+            if (!_context.Pets.Any())
+            {
 
-            //    // Seed Pets
-            //    var random = new Random();
-            //    for (int i = 1; i <= 12; i++)
-            //    {
-            //        var pet = new Pet
-            //        {
-            //            Name = GenerateRandomNames(1)[0], // GenerateRandomNames returns an array, but you only need one name
-            //            Specie = GetRandomSpecie(),
-            //            Race = GetRandomRace(),
-            //            Age = random.Next(1, 15),
-            //            Gender = GetRandomGender(),
-            //            Size = GetRandomSize(),
-            //            Weight = $"{random.Next(5, 50)} lbs",
-            //            Color = GetRandomColor(),
-            //            HealthCondition = GetRandomHealthCondition(),
-            //            Behavior = GetRandomBehavior(),
-            //            Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
-            //        };
-            //        user.Pets.Add(pet);
-            //    }
+                // Seed Pets
+                var pets = new List<Pet>();
+                var random = new Random();
+                for (int i = 1; i <= 12; i++)
+                {
+                    var pet = new Pet
+                    {
+                        Name = GenerateRandomNames(1)[0], // GenerateRandomNames returns an array, but you only need one name
+                        Specie = GetRandomSpecie(),
+                        Race = GetRandomRace(),
+                        Age = random.Next(1, 15),
+                        Gender = GetRandomGender(),
+                        Size = GetRandomSize(),
+                        Weight = $"{random.Next(5, 50)} lbs",
+                        Color = GetRandomColor(),
+                        HealthCondition = GetRandomHealthCondition(),
+                        Behavior = GetRandomBehavior(),
+                        Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
+                    };
+                    pets.Add(pet);
+                }
 
-            //    // Add to context and save changes
-            //    _context.Users.Add(user);
-            //    await _context.SaveChangesAsync();
-            //}
+                await _context.SaveChangesAsync();
+            }
         }
 
         private string[] GenerateRandomNames(int count)

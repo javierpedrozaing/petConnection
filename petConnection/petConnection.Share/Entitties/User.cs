@@ -1,33 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
 using petConnection.Share.Enums;
 
 namespace petConnection.Share.Entitties
 {
 	public class User : IdentityUser
-	{
-		public int Id { get; set; }
-
-		[MaxLength(255)]
-		public string Role { get; set; } = null!;
-
-		[MaxLength(255)]
-		public string UserName {get; set; } = null!;
-
-        [Required]
-		public string Email { get; set; } = null!;
-
-        [Required]
-        public string Password { get; set; } = null!;
-
-        public Profile Profile { get; set; } = null!;
-
-        public ICollection<Pet>? Pets { get; set; }
-
-        [Display(Name = "Mascotas")]
-        public int PetsNumber => Pets == null || Pets.Count == 0 ? 0 : Pets.Count;
-
+    {
         [Display(Name = "Documento")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
@@ -62,6 +42,6 @@ namespace petConnection.Share.Entitties
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";
-    }	
+    }
 }
 

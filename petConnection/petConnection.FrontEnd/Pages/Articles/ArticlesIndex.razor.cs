@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data;
 using System.Net;
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Repositories;
 using petConnection.FrontEnd.Shared;
@@ -8,7 +10,8 @@ using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Articles
 {
-	public partial class ArticlesIndex
+    [Authorize(Roles = "Admin")]
+    public partial class ArticlesIndex
 	{
         private int currentPage = 1;
         private int totalPages;        

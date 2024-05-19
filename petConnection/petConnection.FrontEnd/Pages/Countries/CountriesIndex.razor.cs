@@ -4,9 +4,12 @@ using petConnection.FrontEnd.Repositories;
 using System.Net;
 using CurrieTechnologies.Razor.SweetAlert2;
 using petConnection.Share.Entitties;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace petConnection.FrontEnd.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountriesIndex
     {
         private int currentPage = 1;

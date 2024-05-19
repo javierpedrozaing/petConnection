@@ -7,8 +7,6 @@ namespace petConnection.Share.Entitties
 	{
         public int Id { get; set; }
 
-        public int UserId { get; set; }
-
         [MaxLength(255)]
         [Display(Name = "Nombre")]
         public string Name { get; set; }
@@ -49,7 +47,6 @@ namespace petConnection.Share.Entitties
         [Required]
         public string Photo { get; set; } = null!;
 
-        public User? User { get; set; }
     }
 }
 
