@@ -4,6 +4,8 @@ using petConnection.Backend.UnitOfWork.Implementations;
 using petConnection.Backend.UnitOfWork.Interfaces;
 using petConnection.Backend.Repositories.Interfaces;
 using petConnection.Backend.Repositories.Implementations;
+using Microsoft.AspNetCore.Identity;
+using petConnection.Share.Entitties;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +48,20 @@ builder.Services.AddScoped<IArticlesUnitOfWork, ArticlesUnitOfWork>();
 builder.Services.AddScoped<ISuccessCasesRepository, SuccessCasesRepository>();
 builder.Services.AddScoped<ISuccessCasesUnitOfWork, SuccessCasesUnitOfWork>();
 
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+
+builder.Services.AddIdentity<User, IdentityRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireLowercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase = false;
+})
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 

@@ -1,59 +1,59 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using petConnection.Backend.UnitOfWork.Interfaces;
 using petConnection.Share.Entitties;
+using petConnection.Share.Enums;
 
 namespace petConnection.Backend.Data
 {
 	public class SeedDbUsers
 	{
         private readonly DataContext _context;
+        private readonly IUsersUnitOfWork _usersUnitOfWork;
 
-        public SeedDbUsers(DataContext context)
+        public SeedDbUsers(DataContext context, IUsersUnitOfWork usersUnitOfWork)
         {
             _context = context;
+            _usersUnitOfWork = usersUnitOfWork;
         }
 
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-            //await CheckUsersAsync();
+            await CheckRolesAsync();
+            await CheckUserAsync("1010", "Javier", "Pedroza", "javier@yopmail.com", "311 222 1177", "Calle Luna Calle Sol", UserType.Admin);
         }
 
-        //private async Task CheckUsersAsync()
-        //{
-        //    if (_context.Users.Count() <= 1)
-        //    {
-        //        // Seed Users
-        //        var users = new List<User>();
-        //        var random = new Random();
-        //        for (int i = 1; i <= 12; i++)
-        //        {
-        //            var user = new User
-        //            {                        
-        //                UserName = $"userexample{i + 1}",
-        //                Email = $"userexample{i + 1}@example.com",
-        //                Password = "password",
-        //                Role = "User",
-        //                Profile = new Profile
-        //                {
-        //                    Name = $"User{i + 1}",
-        //                    LastName = "Doe",
-        //                    Age = random.Next(18, 70), // Random age between 18 and 70
-        //                    Address = $"{random.Next(100, 10000)} Main St",
-        //                    Role = "User",
-        //                    Phone = $"123-456-789{i + 1}",
-        //                    Photo = "path/to/photo.jpg",
-        //                },                        
-        //            };
-        //            users.Add(user);
-        //        }
+        private async Task CheckRolesAsync()
+        {
+            await _usersUnitOfWork.CheckRoleAsync(UserType.Admin.ToString());
+            await _usersUnitOfWork.CheckRoleAsync(UserType.User.ToString());
+        }
 
-        //        // Add to context
-        //        _context.AddRange(users);
-        //        // Save changes
-        //        await _context.SaveChangesAsync();
-        //    }
-        //}
+        private async Task<User> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address, UserType userType)
+        {
+            var user = await _usersUnitOfWork.GetUserAsync(email);
+            if (user == null)
+            {
+                user = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
+                    UserName = email,
+                    PhoneNumber = phone,
+                    Address = address,
+                    Document = document,
+                    City = _context.Cities.FirstOrDefault(),
+                    UserType = userType,
+                };
+
+                await _usersUnitOfWork.AddUserAsync(user, "123456");
+                await _usersUnitOfWork.AddUserToRoleAsync(user, userType.ToString());
+            }
+
+            return user;
+        }
 
     }
 }
