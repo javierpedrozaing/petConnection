@@ -20,6 +20,14 @@ namespace petConnection.Backend.Controllers
             _countriesUnitOfWork = countriesUnitOfWork;
         }
 
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<IActionResult> GetComboAsync()
+        {
+            return Ok(await _countriesUnitOfWork.GetComboAsync());
+        }
+
+
         [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {

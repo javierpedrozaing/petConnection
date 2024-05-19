@@ -14,6 +14,8 @@ namespace petConnection.Backend.UnitOfWork.Implementations
         Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
+
+        Task<IEnumerable<Country>> GetComboAsync();
     }
 }
 

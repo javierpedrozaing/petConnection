@@ -25,6 +25,8 @@ namespace petConnection.Backend.UnitOfWork.Implementations
 
         public override async Task<ActionResponse<City>> GetAsync(int id) => await _citiesRepository.GetAsync(id);
 
+        public async Task<IEnumerable<City>> GetComboAsync(int stateId) => await _citiesRepository.GetComboAsync(stateId);
+
     }
 }
 

@@ -18,6 +18,13 @@ namespace petConnection.Backend.UnitOfWork.Implementations
             _context = context;
         }
 
+        public async Task<IEnumerable<Country>> GetComboAsync()
+        {
+            return await _context.Countries
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+        }
+
         public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
         {
             var countries = await _context.Countries
