@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Data;
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Repositories;
 using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Articles
 {
-	public partial class ArticleCreate
+    [Authorize(Roles = "Admin")]
+    public partial class ArticleCreate
 	{
 		private ArticleForm? articleForm;
 		private Article article = new();

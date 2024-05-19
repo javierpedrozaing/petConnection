@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data;
 using System.Net;
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Pages.Pets;
 using petConnection.FrontEnd.Repositories;
@@ -8,7 +10,8 @@ using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Articles
 {
-	public partial class ArticleEdit
+    [Authorize(Roles = "Admin")]
+    public partial class ArticleEdit
 	{
 		private ArticleForm articleForm;
 		private Article? article;

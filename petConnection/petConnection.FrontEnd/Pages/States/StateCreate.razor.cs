@@ -6,7 +6,8 @@ using petConnection.FrontEnd.Shared;
 using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.States
-{    
+{
+    [Authorize(Roles = "Admin")]
     public partial class StateCreate
     {
         private State state = new();

@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using petConnection.Backend.UnitOfWork.Implementations;
 using petConnection.Backend.UnitOfWork.Interfaces;
@@ -8,6 +10,7 @@ using petConnection.Share.Entitties;
 namespace petConnection.Backend.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class CitiesController : GenericController<City>
     {

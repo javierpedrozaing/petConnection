@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Repositories;
 using petConnection.FrontEnd.Shared;
@@ -7,6 +9,7 @@ using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountryCreate
     {
         private FormWithName<Country>? countryForm;

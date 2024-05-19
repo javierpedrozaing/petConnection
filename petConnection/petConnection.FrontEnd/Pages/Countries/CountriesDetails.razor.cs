@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Repositories;
 using petConnection.Share.Entitties;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace petConnection.FrontEnd.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountriesDetails
     {
         private Country? country;

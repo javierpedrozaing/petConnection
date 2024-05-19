@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using petConnection.Backend.Repositories.Interfaces;
 using petConnection.Backend.UnitOfWork.Interfaces;
+using petConnection.Share.DTOs;
 using petConnection.Share.Entitties;
 
 namespace petConnection.Backend.UnitOfWork.Implementations
@@ -24,6 +25,10 @@ namespace petConnection.Backend.UnitOfWork.Implementations
         public async Task<User> GetUserAsync(string email) => await _usersRepository.GetUserAsync(email);
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName) => await _usersRepository.IsUserInRoleAsync(user, roleName);
+
+        public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model);
+
+        public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
     }
 }
 
