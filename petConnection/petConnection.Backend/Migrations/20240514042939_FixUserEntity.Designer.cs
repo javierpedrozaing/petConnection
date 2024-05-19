@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using petConnection.Backend.Data;
 
@@ -11,9 +12,11 @@ using petConnection.Backend.Data;
 namespace petConnection.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240514042939_FixUserEntity")]
+    partial class FixUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace petConnection.Backend.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.City", b =>
@@ -77,7 +80,7 @@ namespace petConnection.Backend.Migrations
                     b.HasIndex("StateId", "Name")
                         .IsUnique();
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.Country", b =>
@@ -98,7 +101,7 @@ namespace petConnection.Backend.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.Pet", b =>
@@ -150,9 +153,6 @@ namespace petConnection.Backend.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Weight")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -162,9 +162,7 @@ namespace petConnection.Backend.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Pets", (string)null);
+                    b.ToTable("Pets");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.Profile", b =>
@@ -204,15 +202,9 @@ namespace petConnection.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.State", b =>
@@ -236,7 +228,7 @@ namespace petConnection.Backend.Migrations
                     b.HasIndex("CountryId", "Name")
                         .IsUnique();
 
-                    b.ToTable("States", (string)null);
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.SuccessCase", b =>
@@ -272,16 +264,13 @@ namespace petConnection.Backend.Migrations
 
                     b.HasIndex("PetId");
 
-                    b.ToTable("SuccessCases", (string)null);
+                    b.ToTable("SuccessCases");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -373,7 +362,7 @@ namespace petConnection.Backend.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.City", b =>
@@ -385,28 +374,6 @@ namespace petConnection.Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
-                });
-
-            modelBuilder.Entity("petConnection.Share.Entitties.Pet", b =>
-                {
-                    b.HasOne("petConnection.Share.Entitties.User", "User")
-                        .WithMany("Pets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("petConnection.Share.Entitties.Profile", b =>
-                {
-                    b.HasOne("petConnection.Share.Entitties.User", "User")
-                        .WithOne("Profile")
-                        .HasForeignKey("petConnection.Share.Entitties.Profile", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("petConnection.Share.Entitties.State", b =>
@@ -450,14 +417,6 @@ namespace petConnection.Backend.Migrations
             modelBuilder.Entity("petConnection.Share.Entitties.State", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("petConnection.Share.Entitties.User", b =>
-                {
-                    b.Navigation("Pets");
-
-                    b.Navigation("Profile")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

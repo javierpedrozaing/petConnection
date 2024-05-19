@@ -9,7 +9,6 @@ namespace petConnection.Backend.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
@@ -21,7 +20,6 @@ namespace petConnection.Backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<User>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Pet>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<Article>().HasIndex(x => x.Id).IsUnique();

@@ -46,7 +46,6 @@ namespace petConnection.Backend.Data
                             Color = "Negro",
                             HealthCondition = "Good",
                             Behavior = "Behavior",
-                            UserId = 1,
                             Photo = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Icecat1-300x300.svg"
                         },
 
