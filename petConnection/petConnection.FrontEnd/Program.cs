@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using petConnection.FrontEnd;
 using petConnection.FrontEnd.AuthenticationProviderTest;
 using petConnection.FrontEnd.Repositories;
+using petConnection.FrontEnd.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -17,6 +18,9 @@ builder.Services.AddScoped<IRepository, Repository>(); // Notacion diamante porq
 
 builder.Services.AddSweetAlert2();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderTest>();
+
+builder.Services.AddScoped<AuthenticationProviderJWT>();
+builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
+builder.Services.AddScoped<ILoginService, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
 
 await builder.Build().RunAsync();
