@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
@@ -16,6 +17,12 @@ namespace petConnection.FrontEnd.Repositories
         public Repository(HttpClient httpclient)
         {
             _httpclient = httpclient;
+        }
+
+        public async Task<HttpResponseWrapper<object>> GetAsync(string url)
+        {
+            var responseHTTP = await _httpclient.GetAsync(url);
+            return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
         }
 
         public async Task<HttpResponseWrapper<T>> GetAsync<T>(string url)
