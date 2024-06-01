@@ -7,6 +7,8 @@ using petConnection.Share.Entitties;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Blazored.Modal;
+using Blazored.Modal.Services;
 
 namespace petConnection.FrontEnd.Pages.Countries
 {
@@ -24,6 +26,8 @@ namespace petConnection.FrontEnd.Pages.Countries
         [Inject] private NavigationManager navigationManager { get; set; } = null; // framework component
 
         [EditorRequired, Parameter] public int Id { get; set; }
+
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -57,6 +61,7 @@ namespace petConnection.FrontEnd.Pages.Countries
                 return;
             }
 
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
 
             Return();
 

@@ -6,6 +6,7 @@ using petConnection.FrontEnd.Repositories;
 using petConnection.FrontEnd.Services;
 using petConnection.Share.Entitties;
 using System.Net;
+using Blazored.Modal.Services;
 
 namespace petConnection.FrontEnd.Pages.Auth
 {
@@ -22,6 +23,7 @@ namespace petConnection.FrontEnd.Pages.Auth
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private ILoginService LoginService { get; set; } = null!;
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,6 +37,11 @@ namespace petConnection.FrontEnd.Pages.Auth
                 imageUrl = user.Photo;
                 user.Photo = null;
             }
+        }
+
+        private void ShowModal()
+        {
+            Modal.Show<ChangePassword>();
         }
 
         private async Task LoadUserAsyc()

@@ -3,33 +3,36 @@ using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using petConnection.FrontEnd.Repositories;
+using petConnection.Share.DTOs;
 
 namespace petConnection.FrontEnd.Pages.Auth
 {
-    public partial class ConfirmEmail
+    public partial class ResetPassword
     {
-        private string? message;
+        private ResetPasswordDTO resetPasswordDTO = new();
+        private bool loading;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
-
-        [Parameter, SupplyParameterFromQuery] public string UserId { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Token { get; set; } = string.Empty;
         [CascadingParameter] IModalService Modal { get; set; } = default!;
 
-        protected async Task ConfirmAccountAsync()
+        private async Task ChangePasswordAsync()
         {
-            var responseHttp = await Repository.GetAsync($"/api/accounts/ConfirmEmail/?userId={UserId}&token={Token}");
+            resetPasswordDTO.Token = Token;
+            loading = true;
+            var responseHttp = await Repository.PostAsync("/api/accounts/ResetPassword", resetPasswordDTO);
+            loading = false;
             if (responseHttp.Error)
             {
-                message = await responseHttp.GetErrorMessageAsync();
+                var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                NavigationManager.NavigateTo("/");
+                loading = false;
                 return;
             }
 
-            await SweetAlertService.FireAsync("Confirmación", "Gracias por confirmar su email, ahora puedes ingresar al sistema.", SweetAlertIcon.Info);
+            await SweetAlertService.FireAsync("Confirmación", "Contraseña cambiada con éxito, ahora puede ingresar con su nueva contraseña.", SweetAlertIcon.Info);
             Modal.Show<Login>();
         }
     }

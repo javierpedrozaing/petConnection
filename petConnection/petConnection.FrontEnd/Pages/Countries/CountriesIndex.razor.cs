@@ -6,6 +6,8 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using petConnection.Share.Entitties;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Blazored.Modal.Services;
+using Blazored.Modal;
 
 namespace petConnection.FrontEnd.Pages.Countries
 {
@@ -21,13 +23,34 @@ namespace petConnection.FrontEnd.Pages.Countries
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
-        [Parameter, SupplyParameterFromQuery] public int Records { get; set; } = 10;        
-        
+        [Parameter, SupplyParameterFromQuery] public int Records { get; set; } = 10;
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
         public List<Country>? Countries { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<CountryEdit>(string.Empty, new ModalParameters().Add("Id", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<CountryCreate>();
+            }
+
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
         }
 
         private async Task SelectedPageAsync((int, int) pageData)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
@@ -22,6 +24,8 @@ namespace petConnection.FrontEnd.Pages.Countries
 
         [Inject] private NavigationManager navigationManager { get; set; } = null!; // framework component
 
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
 
         private async Task CreateAsync()
         {
@@ -33,6 +37,8 @@ namespace petConnection.FrontEnd.Pages.Countries
                 await sweetAlertService.FireAsync("Error", message);
                 return;
             }
+
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
 
             Return();
 

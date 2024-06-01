@@ -47,6 +47,8 @@ namespace petConnection.Share.Entitties
         [Required]
         public string Photo { get; set; } = null!;
 
+        public ICollection<User>? users { get; set; }
+
     }
 }
 

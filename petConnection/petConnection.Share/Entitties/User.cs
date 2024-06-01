@@ -42,6 +42,8 @@ namespace petConnection.Share.Entitties
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";
+
+        public Pet? Pet { get; set; } = null;
     }
 }
 
