@@ -91,6 +91,9 @@ builder.Services.AddScoped<ISuccessCasesUnitOfWork, SuccessCasesUnitOfWork>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 
+builder.Services.AddScoped<IAdoptionsRepository, AdoptionsRepository>();
+builder.Services.AddScoped<IAdoptionsUnitOfWork, AdoptionsUnitOfWork>();
+
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
     x.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;

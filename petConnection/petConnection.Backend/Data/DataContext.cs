@@ -17,6 +17,7 @@ namespace petConnection.Backend.Data
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<SuccessCase> SuccessCases { get; set; }
+        public DbSet<Adoption> Adoption { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
