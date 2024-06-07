@@ -90,7 +90,7 @@ namespace petConnection.Backend.Repositories.Implementations
         {
             var count = await _context.Adoption
                 .Where(X => X.User!.Email == email)
-                .SumAsync(x => x.Id);
+                .SumAsync(x => 1);
 
             return new ActionResponse<int>
             {

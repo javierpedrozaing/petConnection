@@ -3,7 +3,9 @@ using System.Diagnostics.Metrics;
 using System.Net;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using petConnection.FrontEnd.Repositories;
+using petConnection.Share.DTOs;
 using petConnection.Share.Entitties;
 
 namespace petConnection.FrontEnd.Pages.Pets
@@ -12,6 +14,9 @@ namespace petConnection.FrontEnd.Pages.Pets
 	{
         private int currentPage = 1;
         private int totalPages;
+        private int counter = 0;
+        private bool isAuthenticated;
+
 
         [Inject] private IRepository Repository { get; set; } = null!;        
 
@@ -26,10 +31,27 @@ namespace petConnection.FrontEnd.Pages.Pets
 
         [Parameter, SupplyParameterFromQuery] public int Records { get; set; } = 10;
 
+        [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
+        
+
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            await CheckIfUserAuthenticated();
+            await LoadCounterAsync();
+        }
+
+
+        private async Task CheckIfUserAuthenticated()
+        {
+            var authenticationState = await authenticationStateTask;
+            isAuthenticated = true; // update this line
+        }
+
 
         private async Task LoadAsync()
         {
@@ -179,6 +201,57 @@ namespace petConnection.FrontEnd.Pages.Pets
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Mascota borrada con éxito");
+        }
+
+        private async void AddAdoptionAsync(int petId)
+        {
+            if (!isAuthenticated)
+            {
+                return; // update it to use modal
+            }
+
+            var adoptionDTO = new AdoptionDTO
+            {
+                PetId = petId
+            };
+
+            var httpResponse = await Repository.PostAsync("/api/adoptions/newAdoption", adoptionDTO);
+            if (httpResponse.Error)
+            {
+                var message = await httpResponse.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+
+            await LoadCounterAsync();
+
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Adopción creada exitosamente");
+        }
+
+
+        private async Task LoadCounterAsync()
+        {
+            if (!isAuthenticated)
+            {
+                return;
+            }
+
+            var responseHttp = await Repository.GetAsync<int>("api/adoptions/count");
+
+            if (responseHttp.Error)
+            {
+                return;
+            }
+
+            counter = responseHttp.Response;
+
         }
     }
 

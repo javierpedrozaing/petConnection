@@ -32,6 +32,7 @@
     <None Remove="Services\" />
     <None Remove="Pages\Auth\" />
     <None Remove="AuthenticationProviders\" />
+    <None Remove="Pages\Adoptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
@@ -45,6 +46,7 @@
     <Folder Include="Services\" />
     <Folder Include="Pages\Auth\" />
     <Folder Include="AuthenticationProviders\" />
+    <Folder Include="Pages\Adoptions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\petConnection.Share\petConnection.Share.csproj">

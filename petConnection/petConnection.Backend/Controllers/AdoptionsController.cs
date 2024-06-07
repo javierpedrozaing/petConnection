@@ -23,7 +23,7 @@ namespace petConnection.Backend.Controllers
         }
 
 
-        [HttpPost("adoption")]
+        [HttpPost("newAdoption")]
         public async Task<IActionResult> PostAsync(AdoptionDTO adoptionDTO)
         {
             var action = await _adoptionsUnitOfWork.AddAdoptionAsync(User.Identity!.Name, adoptionDTO);
@@ -46,7 +46,7 @@ namespace petConnection.Backend.Controllers
             return BadRequest(action.Message);
         }
 
-        [HttpGet("countAdoptions")]
+        [HttpGet("count")]
         public async Task<IActionResult> GetCountAdoptions()
         {
             // usuario logueado User.Identity!.Name
